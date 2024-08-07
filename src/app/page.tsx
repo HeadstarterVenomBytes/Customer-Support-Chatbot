@@ -18,7 +18,7 @@ export default function Home() {
     {
       role: "assistant",
       content:
-        "Hi! I'm the NovaPulse Technologies support assistant. How can I help you today?",
+        "Hi! I'm the Battery Brain support assistant. How can I help you today?",
     },
   ]);
 
