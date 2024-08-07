@@ -1,11 +1,16 @@
 "use client";
 
 import { Box, Button, Stack, TextField } from "@mui/material";
-import { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 
-interface Message {
+type Message = {
   role: "assistant" | "user";
   content: string;
+};
+
+// Define the type for the function that updates messages
+interface SetMessages {
+  (messages: (prevMessages: Message[]) => Message[]): void;
 }
 
 export default function Home() {
@@ -16,47 +21,105 @@ export default function Home() {
         "Hi! I'm the NovaPulse Technologies support assistant. How can I help you today?",
     },
   ]);
-  const [message, setMessage] = useState<string>("");
 
-  const sendMessage = async () => {
-    setMessage("");
-    setMessages((messages) => [
-      ...messages,
+  const [message, setMessage] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  // Create a ref for the end of the messages container
+  const messagesEndRef = useRef<HTMLDivElement | null>(null);
+
+  // Function to scroll to the bototm of the messages container
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  // Use effect to scroll to bottom whenver messages change
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
+  const sendMessage = async (message: string) => {
+    if (!message.trim() || isLoading) return; // Don't send empty messages
+    setIsLoading(true);
+
+    setMessage(""); // Clear input field
+    // Add the user's message and a placeholder for the assistant's response
+    setMessages((prevMessages) => [
+      ...prevMessages,
       { role: "user", content: message },
       { role: "assistant", content: "" },
     ]);
 
-    // Send the message to the server
-    const response = fetch("/api/chat", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify([...messages, { role: "user", content: message }]),
-    }).then(async (res) => {
-      const reader = res.body?.getReader();
+    try {
+      // Send the message to the server
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify([...messages, { role: "user", content: message }]),
+      });
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      const reader = response.body?.getReader();
       const decoder = new TextDecoder();
 
+      if (!reader) {
+        throw new Error("Failed to get response reader");
+      }
+
       let result = "";
+
       // Process the text from the response
-      return reader?.read().then(function processText({ done, value }) {
+      const processText = async ({
+        done,
+        value,
+      }: ReadableStreamReadResult<Uint8Array>): Promise<string> => {
         if (done) {
           return result;
         }
+
         const text = decoder.decode(value || new Uint8Array(), {
           stream: true,
         });
-        setMessages((messages) => {
-          let lastMessage = messages[messages.length - 1];
-          let otherMessages = messages.slice(0, messages.length - 1);
+        result += text;
+
+        setMessages((prevMessages) => {
+          const lastMessage = prevMessages[prevMessages.length - 1]; // Get the last message (assistant's placeholder)
+          const otherMessages = prevMessages.slice(0, -1); // Get all other messages
+
           return [
             ...otherMessages,
-            { ...lastMessage, content: lastMessage.content + text },
+            { ...lastMessage, content: lastMessage.content + text }, // Append the decoded text to the assistant's message
           ];
         });
-        return reader.read().then(processText);
-      });
-    });
+
+        const next = await reader.read();
+        return processText(next); // Continue reading the next chunk of the response
+      };
+      await reader.read().then(processText);
+    } catch (error) {
+      console.error("Error:", error);
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        {
+          role: "assistant",
+          content:
+            "I'm sorry, but I encountered an error. Please try again later.",
+        },
+      ]);
+    }
+    setIsLoading(false);
+  };
+
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === "Enter" && !event.shiftKey) {
+      event.preventDefault();
+      sendMessage(message);
+    }
   };
 
   return (
@@ -105,18 +168,24 @@ export default function Home() {
               </Box>
             </Box>
           ))}
+          <div ref={messagesEndRef} />
         </Stack>
         <Stack direction="row" spacing={2}>
           <TextField
             label="Message"
             fullWidth
             value={message}
-            onChange={(e) => setMessage(sendMessage)}
+            onChange={(e) => setMessage(e.target.value)}
+            onKeyDown={handleKeyPress}
+            disabled={isLoading}
+          />
+          <Button
+            variant="contained"
+            onClick={() => sendMessage(message)}
+            disabled={isLoading}
           >
-            <Button variant="contained" onClick={sendMessage}>
-              Send
-            </Button>
-          </TextField>
+            {isLoading ? "Sending..." : "Send"}
+          </Button>
         </Stack>
       </Stack>
     </Box>
