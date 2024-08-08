@@ -1,19 +1,24 @@
 "use client";
 
-import { Box, Button, Stack, TextField } from "@mui/material";
+import {
+  Box,
+  Button,
+  Stack,
+  TextField,
+  Typography,
+  AppBar,
+  Toolbar,
+  IconButton,
+} from "@mui/material";
 import React, { useState, useRef, useEffect } from "react";
 import ReactMarkdown from "react-markdown";
 import DOMPurify from "dompurify";
+import MenuIcon from "@mui/icons-material/Menu";
 
 type Message = {
   role: "assistant" | "user";
   content: string;
 };
-
-// Define the type for the function that updates messages
-interface SetMessages {
-  (messages: (prevMessages: Message[]) => Message[]): void;
-}
 
 export default function Home() {
   const [messages, setMessages] = useState<Message[]>([
@@ -26,26 +31,21 @@ export default function Home() {
 
   const [message, setMessage] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
-  // Create a ref for the end of the messages container
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
-  // Function to scroll to the bototm of the messages container
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
-  // Use effect to scroll to bottom whenver messages change
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
 
   const sendMessage = async (message: string) => {
-    if (!message.trim() || isLoading) return; // Don't send empty messages
+    if (!message.trim() || isLoading) return;
     setIsLoading(true);
+    setMessage("");
 
-    setMessage(""); // Clear input field
-    // Add the user's message and a placeholder for the assistant's response
     setMessages((prevMessages) => [
       ...prevMessages,
       { role: "user", content: message },
@@ -53,7 +53,6 @@ export default function Home() {
     ]);
 
     try {
-      // Send the message to the server
       const response = await fetch("/api/chat", {
         method: "POST",
         headers: {
@@ -75,7 +74,6 @@ export default function Home() {
 
       let result = "";
 
-      // Process the text from the response
       const processText = async ({
         done,
         value,
@@ -90,17 +88,17 @@ export default function Home() {
         result += text;
 
         setMessages((prevMessages) => {
-          const lastMessage = prevMessages[prevMessages.length - 1]; // Get the last message (assistant's placeholder)
-          const otherMessages = prevMessages.slice(0, -1); // Get all other messages
+          const lastMessage = prevMessages[prevMessages.length - 1];
+          const otherMessages = prevMessages.slice(0, -1);
 
           return [
             ...otherMessages,
-            { ...lastMessage, content: lastMessage.content + text }, // Append the decoded text to the assistant's message
+            { ...lastMessage, content: lastMessage.content + text },
           ];
         });
 
         const next = await reader.read();
-        return processText(next); // Continue reading the next chunk of the response
+        return processText(next);
       };
       await reader.read().then(processText);
     } catch (error) {
@@ -137,13 +135,33 @@ export default function Home() {
       justifyContent="center"
       alignItems="center"
     >
+      <AppBar position="static">
+        <Toolbar>
+          <IconButton
+            edge="start"
+            color="inherit"
+            aria-label="menu"
+            sx={{ mr: 2 }}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            BatteryBrain Virtual Assistant
+          </Typography>
+        </Toolbar>
+      </AppBar>
       <Stack
         direction={"column"}
         width="500px"
         height="700px"
-        border="1px solid black"
+        border="1px solid"
+        borderColor="primary.main"
         p={2}
         spacing={3}
+        mt={2}
+        bgcolor="background.paper"
+        boxShadow={3}
+        borderRadius={2}
       >
         <Stack
           direction={"column"}
@@ -164,11 +182,11 @@ export default function Home() {
                 bgcolor={
                   message.role === "assistant"
                     ? "primary.main"
-                    : "secondary.main"
+                    : "grey.500"
                 }
                 color="white"
-                borderRadius={16}
-                p={3}
+                borderRadius={2}
+                p={2}
               >
                 <ReactMarkdown>
                   {sanitizeMarkdown(message.content)}
