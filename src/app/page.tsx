@@ -2,6 +2,8 @@
 
 import { Box, Button, Stack, TextField } from "@mui/material";
 import React, { useState, useRef, useEffect } from "react";
+import ReactMarkdown from "react-markdown";
+import DOMPurify from "dompurify";
 
 type Message = {
   role: "assistant" | "user";
@@ -18,7 +20,7 @@ export default function Home() {
     {
       role: "assistant",
       content:
-        "Hi! I'm the NovaPulse Technologies support assistant. How can I help you today?",
+        "Hi! I'm the Battery Brain support assistant. How can I help you today?",
     },
   ]);
 
@@ -122,6 +124,10 @@ export default function Home() {
     }
   };
 
+  const sanitizeMarkdown = (markdown: string) => {
+    return DOMPurify.sanitize(markdown);
+  };
+
   return (
     <Box
       width="100vw"
@@ -164,7 +170,9 @@ export default function Home() {
                 borderRadius={16}
                 p={3}
               >
-                {message.content}
+                <ReactMarkdown>
+                  {sanitizeMarkdown(message.content)}
+                </ReactMarkdown>
               </Box>
             </Box>
           ))}
