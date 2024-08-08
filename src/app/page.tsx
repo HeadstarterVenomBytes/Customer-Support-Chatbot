@@ -3,7 +3,7 @@
 import { Box, Button, Stack, TextField } from "@mui/material";
 import React, { useState, useRef, useEffect } from "react";
 import ReactMarkdown from "react-markdown";
-import DOMPurify from "dompurify";
+import DOMPurify from "isomorphic-dompurify";
 
 type Message = {
   role: "assistant" | "user";
