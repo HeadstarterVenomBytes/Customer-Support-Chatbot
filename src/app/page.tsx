@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import React, { useState, useRef, useEffect } from "react";
 import ReactMarkdown from "react-markdown";
-import DOMPurify from "dompurify";
+import DOMPurify from "isomorphic-dompurify";
 import MenuIcon from "@mui/icons-material/Menu";
 
 type Message = {
@@ -62,7 +62,7 @@ export default function Home() {
     ]);
 
     try {
-// Send the message to the server
+      // Send the message to the server
       const response = await fetch("/api/chat", {
         method: "POST",
         headers: {
@@ -84,7 +84,7 @@ export default function Home() {
 
       let result = "";
 
-// Process the text from the response
+      // Process the text from the response
       const processText = async ({
         done,
         value,
@@ -100,7 +100,7 @@ export default function Home() {
 
         setMessages((prevMessages) => {
           const lastMessage = prevMessages[prevMessages.length - 1]; // Get the last message (assistant's placeholder)
-           const otherMessages = prevMessages.slice(0, -1); // Get all other messages
+          const otherMessages = prevMessages.slice(0, -1); // Get all other messages
           return [
             ...otherMessages,
             { ...lastMessage, content: lastMessage.content + text }, // Append the decoded text to the assistant's message
@@ -190,9 +190,7 @@ export default function Home() {
             >
               <Box
                 bgcolor={
-                  message.role === "assistant"
-                    ? "primary.main"
-                    : "grey.500"
+                  message.role === "assistant" ? "primary.main" : "grey.500"
                 }
                 color="white"
                 borderRadius={2}
