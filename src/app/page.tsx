@@ -20,6 +20,11 @@ type Message = {
   content: string;
 };
 
+// Define the type for the function that updates messages
+interface SetMessages {
+  (messages: (prevMessages: Message[]) => Message[]): void;
+}
+
 export default function Home() {
   const [messages, setMessages] = useState<Message[]>([
     {
@@ -31,21 +36,25 @@ export default function Home() {
 
   const [message, setMessage] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  // Create a ref for the end of the messages container
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
+  // Function to scroll to the bototm of the messages container
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
+  // Use effect to scroll to bottom whenver messages change
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
 
   const sendMessage = async (message: string) => {
-    if (!message.trim() || isLoading) return;
+    if (!message.trim() || isLoading) return; // Don't send empty messages
     setIsLoading(true);
-    setMessage("");
-
+    setMessage(""); // Clear input field
+    // Add the user's message and a placeholder for the assistant's response
     setMessages((prevMessages) => [
       ...prevMessages,
       { role: "user", content: message },
@@ -53,6 +62,7 @@ export default function Home() {
     ]);
 
     try {
+// Send the message to the server
       const response = await fetch("/api/chat", {
         method: "POST",
         headers: {
@@ -74,6 +84,7 @@ export default function Home() {
 
       let result = "";
 
+// Process the text from the response
       const processText = async ({
         done,
         value,
@@ -88,17 +99,16 @@ export default function Home() {
         result += text;
 
         setMessages((prevMessages) => {
-          const lastMessage = prevMessages[prevMessages.length - 1];
-          const otherMessages = prevMessages.slice(0, -1);
-
+          const lastMessage = prevMessages[prevMessages.length - 1]; // Get the last message (assistant's placeholder)
+           const otherMessages = prevMessages.slice(0, -1); // Get all other messages
           return [
             ...otherMessages,
-            { ...lastMessage, content: lastMessage.content + text },
+            { ...lastMessage, content: lastMessage.content + text }, // Append the decoded text to the assistant's message
           ];
         });
 
         const next = await reader.read();
-        return processText(next);
+        return processText(next); // Continue reading the next chunk of the response
       };
       await reader.read().then(processText);
     } catch (error) {
