@@ -1,9 +1,19 @@
 "use client";
 
-import { Box, Button, Stack, TextField } from "@mui/material";
+import {
+  Box,
+  Button,
+  Stack,
+  TextField,
+  Typography,
+  AppBar,
+  Toolbar,
+  IconButton,
+} from "@mui/material";
 import React, { useState, useRef, useEffect } from "react";
 import ReactMarkdown from "react-markdown";
 import DOMPurify from "isomorphic-dompurify";
+import MenuIcon from "@mui/icons-material/Menu";
 
 type Message = {
   role: "assistant" | "user";
@@ -43,7 +53,6 @@ export default function Home() {
   const sendMessage = async (message: string) => {
     if (!message.trim() || isLoading) return; // Don't send empty messages
     setIsLoading(true);
-
     setMessage(""); // Clear input field
     // Add the user's message and a placeholder for the assistant's response
     setMessages((prevMessages) => [
@@ -92,7 +101,6 @@ export default function Home() {
         setMessages((prevMessages) => {
           const lastMessage = prevMessages[prevMessages.length - 1]; // Get the last message (assistant's placeholder)
           const otherMessages = prevMessages.slice(0, -1); // Get all other messages
-
           return [
             ...otherMessages,
             { ...lastMessage, content: lastMessage.content + text }, // Append the decoded text to the assistant's message
@@ -137,13 +145,33 @@ export default function Home() {
       justifyContent="center"
       alignItems="center"
     >
+      <AppBar position="static">
+        <Toolbar>
+          <IconButton
+            edge="start"
+            color="inherit"
+            aria-label="menu"
+            sx={{ mr: 2 }}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            BatteryBrain Virtual Assistant
+          </Typography>
+        </Toolbar>
+      </AppBar>
       <Stack
         direction={"column"}
         width="500px"
         height="700px"
-        border="1px solid black"
+        border="1px solid"
+        borderColor="primary.main"
         p={2}
         spacing={3}
+        mt={2}
+        bgcolor="background.paper"
+        boxShadow={3}
+        borderRadius={2}
       >
         <Stack
           direction={"column"}
@@ -162,13 +190,11 @@ export default function Home() {
             >
               <Box
                 bgcolor={
-                  message.role === "assistant"
-                    ? "primary.main"
-                    : "secondary.main"
+                  message.role === "assistant" ? "primary.main" : "grey.500"
                 }
                 color="white"
-                borderRadius={16}
-                p={3}
+                borderRadius={2}
+                p={2}
               >
                 <ReactMarkdown>
                   {sanitizeMarkdown(message.content)}
