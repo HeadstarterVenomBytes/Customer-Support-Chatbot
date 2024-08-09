@@ -2,7 +2,6 @@
 
 import {
   Box,
-  Button,
   Stack,
   TextField,
   Typography,
@@ -13,17 +12,13 @@ import {
 import React, { useState, useRef, useEffect } from "react";
 import ReactMarkdown from "react-markdown";
 import DOMPurify from "isomorphic-dompurify";
-import MenuIcon from "@mui/icons-material/Menu";
+import SendIcon from "@mui/icons-material/Send";
+import SmartToyIcon from "@mui/icons-material/SmartToy";
 
 type Message = {
   role: "assistant" | "user";
   content: string;
 };
-
-// Define the type for the function that updates messages
-interface SetMessages {
-  (messages: (prevMessages: Message[]) => Message[]): void;
-}
 
 export default function Home() {
   const [messages, setMessages] = useState<Message[]>([
@@ -37,32 +32,26 @@ export default function Home() {
   const [message, setMessage] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  // Create a ref for the end of the messages container
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
-  // Function to scroll to the bototm of the messages container
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
-  // Use effect to scroll to bottom whenver messages change
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
 
   const sendMessage = async (message: string) => {
-    if (!message.trim() || isLoading) return; // Don't send empty messages
+    if (!message.trim() || isLoading) return;
     setIsLoading(true);
-    setMessage(""); // Clear input field
-    // Add the user's message and a placeholder for the assistant's response
+    setMessage(""); 
     setMessages((prevMessages) => [
       ...prevMessages,
       { role: "user", content: message },
-      { role: "assistant", content: "" },
     ]);
 
     try {
-      // Send the message to the server
       const response = await fetch("/api/chat", {
         method: "POST",
         headers: {
@@ -84,7 +73,6 @@ export default function Home() {
 
       let result = "";
 
-      // Process the text from the response
       const processText = async ({
         done,
         value,
@@ -99,16 +87,15 @@ export default function Home() {
         result += text;
 
         setMessages((prevMessages) => {
-          const lastMessage = prevMessages[prevMessages.length - 1]; // Get the last message (assistant's placeholder)
-          const otherMessages = prevMessages.slice(0, -1); // Get all other messages
+          const otherMessages = prevMessages.slice(0);
           return [
             ...otherMessages,
-            { ...lastMessage, content: lastMessage.content + text }, // Append the decoded text to the assistant's message
+            { role: "assistant", content: result },
           ];
         });
 
         const next = await reader.read();
-        return processText(next); // Continue reading the next chunk of the response
+        return processText(next); 
       };
       await reader.read().then(processText);
     } catch (error) {
@@ -144,18 +131,21 @@ export default function Home() {
       flexDirection="column"
       justifyContent="center"
       alignItems="center"
+      bgcolor="#333333"
     >
-      <AppBar position="static">
-        <Toolbar>
-          <IconButton
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2 }}
+      <AppBar position="static" sx={{ bgcolor: "#333333" }}>
+        <Toolbar sx={{ justifyContent: "center" }}>
+          <Typography 
+            variant="h4" 
+            component="div" 
+            sx={{ 
+              flexGrow: 1, 
+              color: "#B8860B", 
+              textAlign: "center", 
+              textShadow: "2px 2px 8px rgba(184, 134, 11, 0.7)",
+              fontWeight: "bold",
+            }}
           >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             BatteryBrain Virtual Assistant
           </Typography>
         </Toolbar>
@@ -165,11 +155,11 @@ export default function Home() {
         width="500px"
         height="700px"
         border="1px solid"
-        borderColor="primary.main"
+        borderColor="#B8860B"
         p={2}
         spacing={3}
         mt={2}
-        bgcolor="background.paper"
+        bgcolor="#333333"
         boxShadow={3}
         borderRadius={2}
       >
@@ -188,13 +178,25 @@ export default function Home() {
                 message.role === "assistant" ? "flex-start" : "flex-end"
               }
             >
+              {message.role === "assistant" && (
+                <SmartToyIcon
+                  sx={{ color: "#B8860B", fontSize: 40, marginRight: 2 }}
+                />
+              )}
               <Box
-                bgcolor={
-                  message.role === "assistant" ? "primary.main" : "grey.500"
-                }
-                color="white"
-                borderRadius={2}
-                p={2}
+                sx={{
+                  bgcolor: message.role === "assistant" ? "#B8860B" : "#555555",
+                  color: "white",
+                  borderRadius: 3,
+                  padding: "12px 16px",
+                  maxWidth: "75%",
+                  boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
+                  backgroundImage: message.role === "assistant"
+                    ? "linear-gradient(135deg, #B8860B 0%, #FFD700 100%)"
+                    : "linear-gradient(135deg, #555555 0%, #666666 100%)",
+                  fontSize: "16px",
+                  lineHeight: "1.6",
+                }}
               >
                 <ReactMarkdown>
                   {sanitizeMarkdown(message.content)}
@@ -212,14 +214,34 @@ export default function Home() {
             onChange={(e) => setMessage(e.target.value)}
             onKeyDown={handleKeyPress}
             disabled={isLoading}
+            InputProps={{
+              sx: {
+                bgcolor: "black",
+                color: "white",
+                borderRadius: "5px",
+              },
+            }}
+            InputLabelProps={{
+              sx: {
+                color: "white",
+              },
+            }}
           />
-          <Button
-            variant="contained"
+          <IconButton
+            color="primary"
             onClick={() => sendMessage(message)}
             disabled={isLoading}
+            sx={{ 
+              bgcolor: "#B8860B", 
+              color: "black", 
+              transition: "transform 0.2s",
+              "&:hover": {
+                transform: "scale(1.1)",
+              },
+            }} 
           >
-            {isLoading ? "Sending..." : "Send"}
-          </Button>
+            <SendIcon />
+          </IconButton>
         </Stack>
       </Stack>
     </Box>
