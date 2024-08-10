@@ -7,6 +7,7 @@ import path from "path";
 
 const embeddings = new HuggingFaceInferenceEmbeddings({
   apiKey: process.env.HUGGINGFACEHUB_API_KEY!,
+  model: "sentence-transformers/multi-qa-mpnet-base-dot-v1",
 });
 
 export async function getRetriever() {
@@ -31,7 +32,7 @@ export async function getRetriever() {
   );
 
   const retriever = vectorStore.asRetriever({
-    k: 6,
+    k: 8,
     searchType: "similarity",
   });
 
