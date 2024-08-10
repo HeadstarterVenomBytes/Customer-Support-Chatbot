@@ -1,0 +1,35 @@
+{
+  "id": "doc_company_overview",
+  "title": "BatteryBrain Company Overview",
+  "category": "Company Information",
+  "subcategory": "General",
+  "overview": "BatteryBrain is a pioneering company at the intersection of artificial intelligence and energy technology, dedicated to revolutionizing the energy storage and distribution landscape.",
+  "sections": [
+    {
+      "title": "Our Mission",
+      "content": "BatteryBrain is committed to reshaping the energy industry by merging cutting-edge AI with proven engineering. Our mission is to develop intelligent battery solutions that optimize energy storage, distribution, and grid integration."
+    },
+    {
+      "title": "Our Vision",
+      "content": "We envision a world where renewable energy is fully harnessed and efficiently distributed, creating a sustainable and resilient energy future for all."
+    },
+    {
+      "title": "Core Values",
+      "content": [
+        {
+          "item": "Innovation",
+          "description": "Continuously pushing the boundaries of what's possible in energy technology."
+        },
+        {
+          "item": "Sustainability",
+          "description": "Committed to developing solutions that promote a greener, more sustainable world."
+        },
+        {
+          "item": "Empowerment",
+          "description": "Enabling individuals and businesses to take control of their energy consumption and production."
+        }
+      ]
+    }
+  ],
+  "last_updated": "2024-08-10"
+}
