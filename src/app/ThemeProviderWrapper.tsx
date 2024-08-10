@@ -6,10 +6,15 @@ import React from "react";
 const theme = createTheme({
   palette: {
     primary: {
-      main: "#1976d2", // blue
+      main: "#B8860B", // Dark Goldenrod
     },
-    secondary: {
-      main: "#ff9800", // orange
+    background: {
+      default: "#333333", // Charcoal background
+      paper: "#333333",   // Charcoal background
+    },
+    text: {
+      primary: "#FFFFFF", // White text for input field and main text
+      secondary: "#000000", // Black for icons or secondary text
     },
   },
   components: {
@@ -17,6 +22,32 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           borderRadius: 8,
+        },
+      },
+    },
+    MuiTextField: {
+      styleOverrides: {
+        root: {
+          '& .MuiInputBase-root': {
+            backgroundColor: '#000000', // Black background for input field
+            color: '#FFFFFF', // White text in input field
+            borderRadius: 5,
+          },
+          '& .MuiInputLabel-root': {
+            color: '#FFFFFF', // White color for input label
+          },
+        },
+      },
+    },
+    MuiIconButton: {
+      styleOverrides: {
+        root: {
+          backgroundColor: '#B8860B', // Dark Goldenrod
+          color: '#000000', // Black for icon button
+          transition: 'transform 0.2s',
+          '&:hover': {
+            transform: 'scale(1.1)', // Scale up on hover
+          },
         },
       },
     },
