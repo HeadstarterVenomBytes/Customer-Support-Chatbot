@@ -1,24 +1,24 @@
 {
+  "id": "policy_privacy",
   "title": "Privacy Policy",
+  "category": "Legal Policies",
+  "subcategory": "Data Protection",
   "tags": ["Privacy", "Data Protection", "Legal"],
-  "content": [
+  "overview": "BatteryBrain values your privacy. This policy outlines how we collect, use, and protect your personal information.",
+  "sections": [
     {
-      "section_title": "Overview",
-      "text": "BatteryBrain values your privacy. This policy outlines how we collect, use, and protect your personal information."
-    },
-    {
-      "section_title": "Data Collection",
-      "subsections": [
+      "title": "Data Collection",
+      "content": [
         {
-          "title": "Types of Data",
-          "list": [
+          "item": "Types of Data",
+          "description": [
             "Personal Information: Name, email address, phone number, etc.",
             "Usage Data: Information on how you use our website and products."
           ]
         },
         {
-          "title": "How Data Is Collected",
-          "list": [
+          "item": "How Data Is Collected",
+          "description": [
             "Information you provide directly (e.g., when creating an account).",
             "Automatically collected information (e.g., through cookies and analytics tools)."
           ]
@@ -26,59 +26,75 @@
       ]
     },
     {
-      "section_title": "Data Usage",
-      "subsections": [
+      "title": "Data Usage",
+      "content": [
         {
-          "title": "Purpose",
-          "list": [
+          "item": "Purpose",
+          "description": [
             "To provide and maintain our services.",
             "To communicate with you, including sending product updates and promotional materials.",
             "To improve our website and services."
           ]
         },
         {
-          "title": "Legal Basis",
-          "text": "We process your personal data based on your consent, contract performance, or legitimate interests."
+          "item": "Legal Basis",
+          "description": "We process your personal data based on your consent, contract performance, or legitimate interests."
         }
       ]
     },
     {
-      "section_title": "Data Protection",
-      "subsections": [
+      "title": "Data Protection",
+      "content": [
         {
-          "title": "Measures",
-          "list": [
+          "item": "Measures",
+          "description": [
             "Encryption of sensitive data.",
             "Regular security audits.",
             "Access controls to limit who can view or modify your data."
           ]
         },
         {
-          "title": "Third-Party Sharing",
-          "text": "We do not share your personal data with third parties except as necessary to provide our services or comply with legal obligations."
+          "item": "Third-Party Sharing",
+          "description": "We do not share your personal data with third parties except as necessary to provide our services or comply with legal obligations."
         }
       ]
     },
     {
-      "section_title": "Your Rights",
-      "subsections": [
+      "title": "Your Rights",
+      "content": [
         {
-          "title": "Access",
-          "text": "You have the right to request access to the personal data we hold about you."
+          "item": "Access",
+          "description": "You have the right to request access to the personal data we hold about you."
         },
         {
-          "title": "Correction",
-          "text": "You can request corrections to any inaccurate or incomplete data."
+          "item": "Correction",
+          "description": "You can request corrections to any inaccurate or incomplete data."
         },
         {
-          "title": "Deletion",
-          "text": "You have the right to request the deletion of your personal data."
+          "item": "Deletion",
+          "description": "You have the right to request the deletion of your personal data."
         }
       ]
     },
     {
-      "section_title": "Contact",
-      "text": "For any questions or requests regarding your privacy, please contact privacy@batterybrain.com."
+      "title": "Contact",
+      "content": "For any questions or requests regarding your privacy, please contact privacy@batterybrain.com."
     }
-  ]
+  ],
+  "faqs": [
+    {
+      "question": "How can I request access to my personal data?",
+      "answer": "You can request access to your personal data by emailing privacy@batterybrain.com. We will respond to your request within 30 days."
+    },
+    {
+      "question": "Can I opt out of receiving marketing communications?",
+      "answer": "Yes, you can opt out of receiving marketing communications at any time by clicking the 'unsubscribe' link in our emails or contacting us directly."
+    },
+    {
+      "question": "How long do you retain my personal data?",
+      "answer": "We retain your personal data for as long as necessary to fulfill the purposes outlined in this privacy policy, unless a longer retention period is required or permitted by law."
+    }
+  ],
+  "related_policies": ["Terms of Service", "Cookie Policy"],
+  "last_updated": "2024-08-09"
 }

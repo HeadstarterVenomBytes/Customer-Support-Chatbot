@@ -1,48 +1,77 @@
 {
+  "id": "policy_return",
   "title": "Return Policy",
+  "category": "Customer Service",
+  "subcategory": "Product Returns",
   "tags": ["Return", "Refund", "Exchange", "Customer Service"],
-  "content": [
+  "overview": "BatteryBrain is committed to customer satisfaction. If you're not satisfied with your purchase, you can return products within 30 days of delivery for a full refund or exchange.",
+  "sections": [
     {
-      "section_title": "Overview",
-      "text": "BatteryBrain is committed to customer satisfaction. If you're not satisfied with your purchase, you can return products within 30 days of delivery for a full refund or exchange."
-    },
-    {
-      "section_title": "Conditions",
-      "list": [
-        "The product must be in its original condition and packaging.",
-        "Proof of purchase is required.",
-        "Returns must be initiated within 30 days of receiving the product."
-      ]
-    },
-    {
-      "section_title": "Process",
-      "ordered_list": [
-        "Contact BatteryBrain customer support to initiate a return.",
-        "Pack the product securely in its original packaging.",
-        "Ship the product back to the address provided by customer support."
-      ]
-    },
-    {
-      "section_title": "Refunds",
-      "subsections": [
+      "title": "Conditions",
+      "content": [
         {
-          "title": "Time Frame",
-          "text": "Refunds are processed within 5-10 business days after the returned product is received and inspected."
+          "item": "Product Condition",
+          "description": "The product must be in its original condition and packaging."
         },
         {
-          "title": "Method",
-          "text": "Refunds will be issued to the original payment method used at the time of purchase."
+          "item": "Proof of Purchase",
+          "description": "Proof of purchase is required."
+        },
+        {
+          "item": "Time Limit",
+          "description": "Returns must be initiated within 30 days of receiving the product."
         }
       ]
     },
     {
-      "section_title": "Exchanges",
-      "subsections": [
+      "title": "Return Process",
+      "content": [
         {
-          "title": "Conditions",
-          "text": "Exchanges are subject to product availability. If the desired product is not available, a refund will be issued."
+          "step": 1,
+          "description": "Contact BatteryBrain customer support to initiate a return."
+        },
+        {
+          "step": 2,
+          "description": "Pack the product securely in its original packaging."
+        },
+        {
+          "step": 3,
+          "description": "Ship the product back to the address provided by customer support."
         }
       ]
+    },
+    {
+      "title": "Refunds",
+      "content": [
+        {
+          "item": "Processing Time",
+          "description": "Refunds are processed within 5-10 business days after the returned product is received and inspected."
+        },
+        {
+          "item": "Refund Method",
+          "description": "Refunds will be issued to the original payment method used at the time of purchase."
+        }
+      ]
+    },
+    {
+      "title": "Exchanges",
+      "content": "Exchanges are subject to product availability. If the desired product is not available, a refund will be issued."
     }
-  ]
+  ],
+  "faqs": [
+    {
+      "question": "How long do I have to return a product?",
+      "answer": "You have 30 days from the date of delivery to initiate a return for a full refund or exchange."
+    },
+    {
+      "question": "Do I need to pay for return shipping?",
+      "answer": "Customers are typically responsible for return shipping costs, unless the product is defective or was sent in error. Contact customer support for specific details."
+    },
+    {
+      "question": "Can I exchange a product for a different model?",
+      "answer": "Yes, exchanges are possible subject to product availability. If the desired product is not available, we will issue a refund."
+    }
+  ],
+  "related_policies": ["Warranty Policy", "Shipping Policy"],
+  "last_updated": "2024-08-09"
 }
