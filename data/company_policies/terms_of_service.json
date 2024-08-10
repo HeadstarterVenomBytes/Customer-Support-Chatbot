@@ -1,0 +1,26 @@
+{
+  "title": "Terms of Service",
+  "tags": ["Terms", "Service", "Legal"],
+  "content": [
+    {
+      "section_title": "Overview",
+      "text": "These Terms of Service govern your use of BatteryBrain's products and services. By using our services, you agree to these terms."
+    },
+    {
+      "section_title": "User Responsibilities",
+      "list": [
+        "You are responsible for maintaining the confidentiality of your account information.",
+        "You agree to use our services only for lawful purposes.",
+        "You agree not to engage in any activity that could harm BatteryBrain's services or infrastructure."
+      ]
+    },
+    {
+      "section_title": "Limitation of Liability",
+      "text": "BatteryBrain is not liable for any indirect, incidental, or consequential damages arising from your use of our products and services."
+    },
+    {
+      "section_title": "Changes to Terms",
+      "text": "We may update these terms from time to time. Continued use of our services after changes indicates your acceptance of the new terms."
+    }
+  ]
+}

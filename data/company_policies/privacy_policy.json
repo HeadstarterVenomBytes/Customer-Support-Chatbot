@@ -1,0 +1,84 @@
+{
+  "title": "Privacy Policy",
+  "tags": ["Privacy", "Data Protection", "Legal"],
+  "content": [
+    {
+      "section_title": "Overview",
+      "text": "BatteryBrain values your privacy. This policy outlines how we collect, use, and protect your personal information."
+    },
+    {
+      "section_title": "Data Collection",
+      "subsections": [
+        {
+          "title": "Types of Data",
+          "list": [
+            "Personal Information: Name, email address, phone number, etc.",
+            "Usage Data: Information on how you use our website and products."
+          ]
+        },
+        {
+          "title": "How Data Is Collected",
+          "list": [
+            "Information you provide directly (e.g., when creating an account).",
+            "Automatically collected information (e.g., through cookies and analytics tools)."
+          ]
+        }
+      ]
+    },
+    {
+      "section_title": "Data Usage",
+      "subsections": [
+        {
+          "title": "Purpose",
+          "list": [
+            "To provide and maintain our services.",
+            "To communicate with you, including sending product updates and promotional materials.",
+            "To improve our website and services."
+          ]
+        },
+        {
+          "title": "Legal Basis",
+          "text": "We process your personal data based on your consent, contract performance, or legitimate interests."
+        }
+      ]
+    },
+    {
+      "section_title": "Data Protection",
+      "subsections": [
+        {
+          "title": "Measures",
+          "list": [
+            "Encryption of sensitive data.",
+            "Regular security audits.",
+            "Access controls to limit who can view or modify your data."
+          ]
+        },
+        {
+          "title": "Third-Party Sharing",
+          "text": "We do not share your personal data with third parties except as necessary to provide our services or comply with legal obligations."
+        }
+      ]
+    },
+    {
+      "section_title": "Your Rights",
+      "subsections": [
+        {
+          "title": "Access",
+          "text": "You have the right to request access to the personal data we hold about you."
+        },
+        {
+          "title": "Correction",
+          "text": "You can request corrections to any inaccurate or incomplete data."
+        },
+        {
+          "title": "Deletion",
+          "text": "You have the right to request the deletion of your personal data."
+        }
+      ]
+    },
+    {
+      "section_title": "Contact",
+      "text": "For any questions or requests regarding your privacy, please contact privacy@batterybrain.com."
+    }
+  ]
+}
