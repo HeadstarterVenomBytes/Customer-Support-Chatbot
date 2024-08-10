@@ -5,36 +5,44 @@
   "subcategory": "Energy Management",
   "tags": ["Grid", "Energy", "Renewable", "Integration"],
   "overview": "BatteryBrain's Grid Integration Solutions are designed to enhance the interaction between energy storage systems and the electrical grid. These solutions ensure smooth, efficient, and secure integration of renewable energy sources and battery storage with existing grid infrastructure.",
-  "key_features": [
+  "sections": [
     {
-      "title": "Real-Time Monitoring",
-      "description": "Continuous monitoring of grid conditions and automatic adjustments to energy flow."
+      "title": "Key Features",
+      "content": [
+        {
+          "item": "Real-Time Monitoring",
+          "description": "Continuous monitoring of grid conditions and automatic adjustments to energy flow."
+        },
+        {
+          "item": "Dynamic Load Balancing",
+          "description": "AI-driven algorithms distribute energy based on demand, reducing strain on the grid."
+        },
+        {
+          "item": "Interoperability",
+          "description": "Compatible with various grid standards and protocols, ensuring easy integration with existing infrastructure."
+        },
+        {
+          "item": "Resiliency Enhancements",
+          "description": "Improves grid stability by providing backup power during disruptions and balancing intermittent renewable sources."
+        }
+      ]
     },
     {
-      "title": "Dynamic Load Balancing",
-      "description": "AI-driven algorithms distribute energy based on demand, reducing strain on the grid."
-    },
-    {
-      "title": "Interoperability",
-      "description": "Compatible with various grid standards and protocols, ensuring easy integration with existing infrastructure."
-    },
-    {
-      "title": "Resiliency Enhancements",
-      "description": "Improves grid stability by providing backup power during disruptions and balancing intermittent renewable sources."
-    }
-  ],
-  "use_cases": [
-    {
-      "title": "Renewable Energy Integration",
-      "description": "Ensuring stable integration of solar and wind energy into the grid without causing fluctuations."
-    },
-    {
-      "title": "Smart Grids",
-      "description": "Enhancing smart grid capabilities by enabling real-time data exchange and energy management."
-    },
-    {
-      "title": "Distributed Energy Resources (DER)",
-      "description": "Facilitating the use of small-scale energy sources in the grid, such as home solar panels or community wind farms."
+      "title": "Use Cases",
+      "content": [
+        {
+          "item": "Renewable Energy Integration",
+          "description": "Ensuring stable integration of solar and wind energy into the grid without causing fluctuations."
+        },
+        {
+          "item": "Smart Grids",
+          "description": "Enhancing smart grid capabilities by enabling real-time data exchange and energy management."
+        },
+        {
+          "item": "Distributed Energy Resources (DER)",
+          "description": "Facilitating the use of small-scale energy sources in the grid, such as home solar panels or community wind farms."
+        }
+      ]
     }
   ],
   "faqs": [
@@ -47,21 +55,5 @@
       "answer": "Yes, they are fully compatible with microgrid setups, providing the same benefits of stability and efficiency in smaller, localized grids."
     }
   ],
-  "technical_documentation": [
-    {
-      "title": "Integration Manuals",
-      "description": "Comprehensive guides for integrating BatteryBrain's solutions with various grid infrastructures.",
-      "url": "/docs/integration-manuals/grid-integration-solutions"
-    },
-    {
-      "title": "Compliance And Standards",
-      "description": "Documentation on how these solutions meet industry standards and regulatory requirements.",
-      "url": "/docs/compliance/grid-integration-solutions"
-    }
-  ],
-  "related_products": [
-    "Intelligent Battery Solutions",
-    "Renewable Energy Management System"
-  ],
-  "last_updated": "2024-08-09"
+  "last_updated": "2024-08-10"
 }

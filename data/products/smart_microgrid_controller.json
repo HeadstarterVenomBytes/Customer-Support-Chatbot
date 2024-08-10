@@ -1,0 +1,59 @@
+{
+  "id": "product_smart_microgrid_controller",
+  "title": "Smart Microgrid Controller",
+  "category": "Products",
+  "subcategory": "Grid Management",
+  "tags": ["Microgrid", "AI", "Energy Distribution", "Resilience"],
+  "overview": "BatteryBrain's Smart Microgrid Controller is an advanced system designed to manage and optimize local energy grids, enhancing resilience and efficiency for communities, campuses, and industrial sites.",
+  "sections": [
+    {
+      "title": "Core Capabilities",
+      "content": [
+        {
+          "item": "Intelligent Load Balancing",
+          "description": "AI-driven algorithms that dynamically balance energy supply and demand within the microgrid."
+        },
+        {
+          "item": "Seamless Grid Transition",
+          "description": "Enables smooth transitions between grid-connected and island modes, ensuring uninterrupted power supply."
+        },
+        {
+          "item": "Renewable Integration",
+          "description": "Optimizes the integration and utilization of local renewable energy sources like solar and wind."
+        },
+        {
+          "item": "Predictive Maintenance",
+          "description": "AI-powered diagnostics predict and prevent potential issues, ensuring high reliability."
+        }
+      ]
+    },
+    {
+      "title": "Applications",
+      "content": [
+        {
+          "item": "Community Microgrids",
+          "description": "Empowers communities to create resilient, locally-managed energy systems."
+        },
+        {
+          "item": "Industrial Complexes",
+          "description": "Provides reliable, efficient power management for manufacturing and processing facilities."
+        },
+        {
+          "item": "Educational Campuses",
+          "description": "Enables universities and schools to manage their energy independently and sustainably."
+        }
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "question": "How does the Smart Microgrid Controller improve energy resilience?",
+      "answer": "By enabling local energy management and seamless transitions between grid and island modes, it ensures continuous power supply even during main grid outages."
+    },
+    {
+      "question": "Can it integrate with existing energy infrastructure?",
+      "answer": "Yes, the controller is designed to integrate with a wide range of existing energy infrastructure, including traditional and renewable sources."
+    }
+  ],
+  "last_updated": "2024-08-10"
+}

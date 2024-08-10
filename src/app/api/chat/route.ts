@@ -5,11 +5,7 @@ import {
   RunnableSequence,
   RunnablePassthrough,
 } from "@langchain/core/runnables";
-import {
-  HumanMessage,
-  SystemMessage,
-  AIMessage,
-} from "@langchain/core/messages";
+
 import { PromptTemplate } from "@langchain/core/prompts";
 import { createStuffDocumentsChain } from "langchain/chains/combine_documents";
 import { getRetriever } from "@/lib/loadDocuments";
@@ -28,23 +24,18 @@ type RequestBody = UserMessage | AssistantMessage;
 
 const template = `You are a knowledgeable and supportive AI customer support agent for Battery Brain, a company dedicated to reshaping the energy industry by merging cutting-edge AI with proven engineering.
 
-Your responsibilities include:
-
-1. **Providing Accurate Information**: Offer clear, precise answers to inquiries about Battery Brain products and services. Ensure all information is accurate and up-to-date. Double-check facts before responding.
-2. **Troubleshooting**: Assist customers with troubleshooting common issues related to intelligent battery solutions, energy storage, distribution, and grid integration. Provide easy-to-follow, step-by-step solutions.
-3. **Guidance and Instructions**: Offer detailed instructions on product installation, maintenance, and optimization. Use simple language, avoid technical jargon, and be patient and thorough.
-4. **Explaining Complex Concepts**: Break down technical and complex concepts into easy-to-understand explanations. Use analogies and examples to help customers grasp difficult topics. Ensure customers feel supported and not overwhelmed.
-5. **Resource Direction**: Guide customers to relevant resources such as user manuals, online support forums, or FAQ sections. Enhance their ability to find solutions independently while being ready to assist further if needed.
-6. **Escalation**: Identify when an issue requires escalation to human support agents. Promptly direct the customer to the appropriate channel and ensure a smooth handoff. Reassure the customer that their issue will be resolved.
-7. **Customer Satisfaction and Professionalism**: Promote customer satisfaction and loyalty by delivering exceptional support. Maintain a positive, professional demeanor in all interactions. Be empathetic, courteous, and respectful. Follow up where appropriate to ensure the issue is fully resolved.
-
 Your goal is to provide accurate and helpful information, resolve common issues efficiently, and ensure a seamless and pleasant experience for all Battery Brain customers. Always strive for clarity, empathy, professionalism, and excellence in every interaction.
-Use the following pieces of retrieved context to answer the question. If you don't know the answer, recommend they escalate to a human support agent. Make sure the output is cleanly formatted and concise.
 
+Use the following pieces of retrieved context to answer the question:
 {context}
 
+If the context doesn't contain relevant information to answer the question, clearly state that. If you're unsure or the answer requires information beyond what's provided, recommend escalation to a human support agent.
+
+Make sure your response is cleanly formatted, concise, and directly addresses the user's question. If appropriate, provide step-by-step instructions or bullet points for clarity.
+
 Question: {question}
-`;
+
+Helpful answer:`;
 
 const customPrompt = PromptTemplate.fromTemplate(template);
 
@@ -74,6 +65,8 @@ initChain().catch((err) => {
 });
 
 export async function POST(req: Request): Promise<NextResponse> {
+  const retriever = await getRetriever();
+
   if (!chain) {
     return NextResponse.json(
       { error: "Chain not initialized" },
@@ -86,7 +79,6 @@ export async function POST(req: Request): Promise<NextResponse> {
     (msg: RequestBody) => msg.role === "user"
   )?.content;
 
-  const retriever = await getRetriever();
   const context = await retriever.invoke(question);
 
   const completion = await chain.stream({
