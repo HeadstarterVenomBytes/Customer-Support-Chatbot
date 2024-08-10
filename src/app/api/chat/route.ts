@@ -1,10 +1,24 @@
 import { NextResponse } from "next/server";
-import OpenAI from "openai";
+import { ChatOpenAI } from "@langchain/openai";
+import { BytesOutputParser } from "@langchain/core/output_parsers";
+import { RunnableSequence } from "@langchain/core/runnables";
+import {
+  HumanMessage,
+  SystemMessage,
+  AIMessage,
+} from "@langchain/core/messages";
 
-interface RequestBody {
-  role: "user | assistant";
+interface UserMessage {
+  role: "user";
   content: string;
 }
+
+interface AssistantMessage {
+  role: "assistant";
+  content: string;
+}
+
+type RequestBody = UserMessage | AssistantMessage;
 
 const systemPrompt = `You are a knowledgeable and supportive AI customer support agent for Battery Brain, a company dedicated to reshaping the energy industry by merging cutting-edge AI with proven engineering.
 
@@ -22,30 +36,38 @@ Your responsibilities include:
 
 Your goal is to provide accurate and helpful information, resolve common issues efficiently, and ensure a seamless and pleasant experience for all Battery Brain customers. Always strive for clarity, empathy, professionalism, and excellence in every interaction.`;
 
-const client = new OpenAI({
-  baseURL: "https://openrouter.ai/api/v1",
-  apiKey: process.env.OPENROUTER_API_KEY,
-});
+const chain = RunnableSequence.from([
+  new ChatOpenAI({
+    modelName: "meta-llama/llama-3.1-8b-instruct:free",
+    streaming: true,
+    openAIApiKey: process.env.OPENROUTER_API_KEY!,
+    configuration: {
+      baseURL: "https://openrouter.ai/api/v1",
+    },
+  }),
+  new BytesOutputParser(),
+]);
 
 export async function POST(req: Request): Promise<NextResponse> {
   const data = await req.json();
 
-  const completion = await client.chat.completions.create({
-    messages: [{ role: "system", content: systemPrompt }, ...data],
-    model: "meta-llama/llama-3.1-8b-instruct:free",
-    stream: true,
-  });
+  const messages = [
+    new SystemMessage(systemPrompt),
+    ...data.map((msg: RequestBody) =>
+      msg.role === "user"
+        ? new HumanMessage(msg.content)
+        : new AIMessage(msg.content)
+    ),
+  ];
+
+  const completion = await chain.stream(messages);
 
   const stream = new ReadableStream<Uint8Array>({
     async start(controller) {
-      const encoder = new TextEncoder();
       try {
         for await (const chunk of completion) {
-          const content = (chunk as OpenAI.ChatCompletionChunk).choices[0]
-            ?.delta?.content;
-          if (content) {
-            const text = encoder.encode(content);
-            controller.enqueue(text);
+          if (chunk) {
+            controller.enqueue(chunk);
           }
         }
       } catch (err) {
