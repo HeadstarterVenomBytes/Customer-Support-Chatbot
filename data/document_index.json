@@ -1,0 +1,50 @@
+{
+  "id": "doc_index_batterybrain",
+  "title": "BatteryBrain Documentation Index",
+  "category": "Documentation",
+  "subcategory": "Index",
+  "overview": "Welcome to the BatteryBrain documentation. This index provides links to detailed information on our products and company policies.",
+  "sections": [
+    {
+      "title": "Product Documentation",
+      "content": [
+        {
+          "item": "Intelligent Battery Solutions",
+          "description": "Optimize battery performance, lifespan, and efficiency.",
+          "link": "products/IntelligentBatterySolutions.json"
+        },
+        {
+          "item": "Energy Storage Systems",
+          "description": "Store and manage energy from renewable sources.",
+          "link": "products/EnergyStorageSystems.json"
+        },
+        {
+          "item": "Grid Integration Solutions",
+          "description": "Enhance grid interaction with energy storage systems.",
+          "link": "products/GridIntegrationSolutions.json"
+        }
+      ]
+    },
+    {
+      "title": "Company Policies",
+      "content": [
+        {
+          "item": "Privacy Policy",
+          "description": "How we collect, use, and protect your personal information.",
+          "link": "company_policies/PrivacyPolicy.json"
+        },
+        {
+          "item": "Return Policy",
+          "description": "Our policies regarding product returns, refunds, and exchanges.",
+          "link": "company_policies/ReturnPolicy.json"
+        },
+        {
+          "item": "Terms of Service",
+          "description": "The terms and conditions for using our products and services.",
+          "link": "company_policies/TermsOfService.json"
+        }
+      ]
+    }
+  ],
+  "last_updated": "2024-08-09"
+}

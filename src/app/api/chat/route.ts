@@ -1,14 +1,32 @@
 import { NextResponse } from "next/server";
-import OpenAI from "openai";
+import { ChatOpenAI } from "@langchain/openai";
+import { BytesOutputParser } from "@langchain/core/output_parsers";
+import {
+  RunnableSequence,
+  RunnablePassthrough,
+} from "@langchain/core/runnables";
+import {
+  HumanMessage,
+  SystemMessage,
+  AIMessage,
+} from "@langchain/core/messages";
+import { PromptTemplate } from "@langchain/core/prompts";
+import { createStuffDocumentsChain } from "langchain/chains/combine_documents";
+import { getRetriever } from "@/lib/loadDocuments";
 
-interface RequestBody {
-  role: "user | assistant";
+interface UserMessage {
+  role: "user";
   content: string;
 }
 
-const systemPrompt = `You are a knowledgeable and supportive AI customer support agent for Battery Brain, a company dedicated to reshaping the energy industry by merging cutting-edge AI with proven engineering.
+interface AssistantMessage {
+  role: "assistant";
+  content: string;
+}
 
-Battery Brain's mission: "BatteryBrain is committed to reshaping the energy industry by merging cutting-edge AI with proven engineering. Our mission is to develop intelligent battery solutions that optimize energy storage, distribution, and grid integration. By seamlessly combining advanced algorithms with traditional power technologies, we empower individuals and businesses to harness the full potential of renewable energy while building a more sustainable and resilient energy future."
+type RequestBody = UserMessage | AssistantMessage;
+
+const template = `You are a knowledgeable and supportive AI customer support agent for Battery Brain, a company dedicated to reshaping the energy industry by merging cutting-edge AI with proven engineering.
 
 Your responsibilities include:
 
@@ -20,32 +38,68 @@ Your responsibilities include:
 6. **Escalation**: Identify when an issue requires escalation to human support agents. Promptly direct the customer to the appropriate channel and ensure a smooth handoff. Reassure the customer that their issue will be resolved.
 7. **Customer Satisfaction and Professionalism**: Promote customer satisfaction and loyalty by delivering exceptional support. Maintain a positive, professional demeanor in all interactions. Be empathetic, courteous, and respectful. Follow up where appropriate to ensure the issue is fully resolved.
 
-Your goal is to provide accurate and helpful information, resolve common issues efficiently, and ensure a seamless and pleasant experience for all Battery Brain customers. Always strive for clarity, empathy, professionalism, and excellence in every interaction.`;
+Your goal is to provide accurate and helpful information, resolve common issues efficiently, and ensure a seamless and pleasant experience for all Battery Brain customers. Always strive for clarity, empathy, professionalism, and excellence in every interaction.
+Use the following pieces of retrieved context to answer the question. If you don't know the answer, recommend they escalate to a human support agent. Make sure the output is cleanly formatted and concise.
 
-const client = new OpenAI({
-  baseURL: "https://openrouter.ai/api/v1",
-  apiKey: process.env.OPENROUTER_API_KEY,
+{context}
+
+Question: {question}
+`;
+
+const customPrompt = PromptTemplate.fromTemplate(template);
+
+const llm = new ChatOpenAI({
+  modelName: "meta-llama/llama-3.1-8b-instruct:free",
+  streaming: true,
+  openAIApiKey: process.env.OPENROUTER_API_KEY!,
+  configuration: {
+    baseURL: "https://openrouter.ai/api/v1",
+  },
+});
+
+// Only initialize the chain once
+let chain: RunnableSequence<Record<string, unknown>, Uint8Array> | null = null;
+
+async function initChain() {
+  chain = await createStuffDocumentsChain({
+    llm,
+    prompt: customPrompt,
+    outputParser: new BytesOutputParser(),
+  });
+}
+
+// Ensure the chain is initialized before handling requests
+initChain().catch((err) => {
+  console.error("Failed to initialize chain", err);
 });
 
 export async function POST(req: Request): Promise<NextResponse> {
-  const data = await req.json();
+  if (!chain) {
+    return NextResponse.json(
+      { error: "Chain not initialized" },
+      { status: 500 }
+    );
+  }
 
-  const completion = await client.chat.completions.create({
-    messages: [{ role: "system", content: systemPrompt }, ...data],
-    model: "meta-llama/llama-3.1-8b-instruct:free",
-    stream: true,
+  const data = await req.json();
+  const question = data.find(
+    (msg: RequestBody) => msg.role === "user"
+  )?.content;
+
+  const retriever = await getRetriever();
+  const context = await retriever.invoke(question);
+
+  const completion = await chain.stream({
+    question,
+    context,
   });
 
   const stream = new ReadableStream<Uint8Array>({
     async start(controller) {
-      const encoder = new TextEncoder();
       try {
         for await (const chunk of completion) {
-          const content = (chunk as OpenAI.ChatCompletionChunk).choices[0]
-            ?.delta?.content;
-          if (content) {
-            const text = encoder.encode(content);
-            controller.enqueue(text);
+          if (chunk) {
+            controller.enqueue(chunk);
           }
         }
       } catch (err) {

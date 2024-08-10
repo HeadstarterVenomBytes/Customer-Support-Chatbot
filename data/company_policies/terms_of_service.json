@@ -1,0 +1,47 @@
+{
+  "id": "policy_terms_of_service",
+  "title": "Terms of Service",
+  "category": "Legal Policies",
+  "subcategory": "User Agreement",
+  "tags": ["Terms", "Service", "Legal"],
+  "overview": "These Terms of Service govern your use of BatteryBrain's products and services. By using our services, you agree to these terms.",
+  "sections": [
+    {
+      "title": "User Responsibilities",
+      "content": [
+        {
+          "item": "Account Confidentiality",
+          "description": "You are responsible for maintaining the confidentiality of your account information."
+        },
+        {
+          "item": "Lawful Use",
+          "description": "You agree to use our services only for lawful purposes."
+        },
+        {
+          "item": "Service Protection",
+          "description": "You agree not to engage in any activity that could harm BatteryBrain's services or infrastructure."
+        }
+      ]
+    },
+    {
+      "title": "Limitation of Liability",
+      "content": "BatteryBrain is not liable for any indirect, incidental, or consequential damages arising from your use of our products and services."
+    },
+    {
+      "title": "Changes to Terms",
+      "content": "We may update these terms from time to time. Continued use of our services after changes indicates your acceptance of the new terms."
+    }
+  ],
+  "faqs": [
+    {
+      "question": "How often are the Terms of Service updated?",
+      "answer": "The Terms of Service may be updated periodically. We recommend checking this page regularly for any changes."
+    },
+    {
+      "question": "What happens if I don't agree with the updated terms?",
+      "answer": "If you do not agree with the updated terms, you should discontinue use of our services. Continued use indicates acceptance of the new terms."
+    }
+  ],
+  "related_policies": ["Privacy Policy", "Acceptable Use Policy"],
+  "last_updated": "2024-08-09"
+}
