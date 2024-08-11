@@ -5,18 +5,39 @@ import React from "react";
 
 const theme = createTheme({
   palette: {
+    mode: 'dark',
     primary: {
-      main: "#1976d2", // blue
+      main: "#121212",
     },
-    secondary: {
-      main: "#ff9800", // orange
+    background: {
+      default: "#121212",
+      paper: "#000000",
+    },
+    text: {
+      primary: "#FFFFFF",
+      secondary: "#B0B0B0",
     },
   },
   components: {
+    MuiTypography: {
+      styleOverrides: {
+        root: {
+          color: "#FFFFFF",
+        },
+      },
+    },
     MuiButton: {
       styleOverrides: {
         root: {
           borderRadius: 8,
+          backgroundColor: "#000000",
+          color: "#FFFFFF",
+          transition: "transform 0.3s, box-shadow 0.3s",
+          "&:hover": {
+            transform: "scale(1.1)",
+            boxShadow: "0 0 10px rgba(255, 255, 255, 0.3)",
+            backgroundColor: "#1E1E1E",
+          },
         },
       },
     },
