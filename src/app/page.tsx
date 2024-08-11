@@ -9,18 +9,19 @@ import {
   AppBar,
   Toolbar,
   IconButton,
+  CircularProgress,
 } from "@mui/material";
 import React, { useState, useRef, useEffect } from "react";
 import ReactMarkdown from "react-markdown";
 import DOMPurify from "isomorphic-dompurify";
 import MenuIcon from "@mui/icons-material/Menu";
+import SendIcon from '@mui/icons-material/Send';
 
 type Message = {
   role: "assistant" | "user";
   content: string;
 };
 
-// Define the type for the function that updates messages
 interface SetMessages {
   (messages: (prevMessages: Message[]) => Message[]): void;
 }
@@ -37,24 +38,20 @@ export default function Home() {
   const [message, setMessage] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  // Create a ref for the end of the messages container
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
-  // Function to scroll to the bototm of the messages container
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
-  // Use effect to scroll to bottom whenver messages change
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
 
   const sendMessage = async (message: string) => {
-    if (!message.trim() || isLoading) return; // Don't send empty messages
+    if (!message.trim() || isLoading) return;
     setIsLoading(true);
-    setMessage(""); // Clear input field
-    // Add the user's message and a placeholder for the assistant's response
+    setMessage("");
     setMessages((prevMessages) => [
       ...prevMessages,
       { role: "user", content: message },
@@ -62,7 +59,6 @@ export default function Home() {
     ]);
 
     try {
-      // Send the message to the server
       const response = await fetch("/api/chat", {
         method: "POST",
         headers: {
@@ -84,7 +80,6 @@ export default function Home() {
 
       let result = "";
 
-      // Process the text from the response
       const processText = async ({
         done,
         value,
@@ -99,16 +94,16 @@ export default function Home() {
         result += text;
 
         setMessages((prevMessages) => {
-          const lastMessage = prevMessages[prevMessages.length - 1]; // Get the last message (assistant's placeholder)
-          const otherMessages = prevMessages.slice(0, -1); // Get all other messages
+          const lastMessage = prevMessages[prevMessages.length - 1];
+          const otherMessages = prevMessages.slice(0, -1);
           return [
             ...otherMessages,
-            { ...lastMessage, content: lastMessage.content + text }, // Append the decoded text to the assistant's message
+            { ...lastMessage, content: lastMessage.content + text },
           ];
         });
 
         const next = await reader.read();
-        return processText(next); // Continue reading the next chunk of the response
+        return processText(next);
       };
       await reader.read().then(processText);
     } catch (error) {
@@ -184,10 +179,12 @@ export default function Home() {
             <Box
               key={index}
               display="flex"
-              justifyContent={
-                message.role === "assistant" ? "flex-start" : "flex-end"
-              }
+              flexDirection="column"
+              alignItems={message.role === "assistant" ? "flex-start" : "flex-end"}
             >
+              <Typography variant="caption" color="textSecondary">
+                {message.role === "assistant" ? "AI Assistant" : "User"}
+              </Typography>
               <Box
                 bgcolor={
                   message.role === "assistant" ? "primary.main" : "grey.500"
@@ -195,6 +192,7 @@ export default function Home() {
                 color="white"
                 borderRadius={2}
                 p={2}
+                maxWidth="75%"
               >
                 <ReactMarkdown>
                   {sanitizeMarkdown(message.content)}
@@ -217,6 +215,14 @@ export default function Home() {
             variant="contained"
             onClick={() => sendMessage(message)}
             disabled={isLoading}
+            startIcon={isLoading ? <CircularProgress size={16} /> : <SendIcon />}
+            sx={{
+              transition: "transform 0.3s, box-shadow 0.3s",
+              "&:hover": {
+                transform: "scale(1.1)",
+                boxShadow: "0 0 10px rgba(33, 150, 243, 0.5)",
+              },
+            }}
           >
             {isLoading ? "Sending..." : "Send"}
           </Button>

@@ -6,22 +6,28 @@ import React from "react";
 const theme = createTheme({
   palette: {
     primary: {
-      main: "#1976d2", // blue
+      main: "#006400", // forest green
     },
     secondary: {
-      main: "#ff9800", // orange
+      main: "#8FBC8F", // dark sea green
     },
+    background: {
+      default: "#F0FFF0", // honeydew
+    }
   },
   components: {
     MuiButton: {
       styleOverrides: {
         root: {
           borderRadius: 8,
+          backgroundColor: "#006400",
+          color: "#FFD700",
         },
       },
     },
   },
 });
+
 
 const ThemeProviderWrapper: React.FC<{ children: React.ReactNode }> = ({
   children,
