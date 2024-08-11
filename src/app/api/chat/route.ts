@@ -75,7 +75,7 @@ export async function POST(req: Request): Promise<NextResponse> {
   }
 
   const data = await req.json();
-  const question = data.find(
+  const question = data.findLast(
     (msg: RequestBody) => msg.role === "user"
   )?.content;
 
